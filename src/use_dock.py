@@ -45,7 +45,7 @@ def get_pdb_file(pdbid, pdbfile=None, pdbpath=None, savepath=None):
         os.system('mv %s.pdb.gz %s/%s/pdb%s.ent.gz'%
                   (pdbid.upper(), savepath, pdbid[1:3].lower(), pdbid.lower()))
     else:
-        raise IOError('Fail to locate %s at:\n%s\n'%(pdbid,'\n'.join(locations))
+        raise IOError('Fail to file %s at:\n%s\n'%(pdbid,'\n'.join(locations)))
     return get_pdb_file(pdbid, pdbfile, savepath, savepath=None)
 
 class DockTool(object):
