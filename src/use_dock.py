@@ -10,6 +10,7 @@ DEFINE_PATCHDOCK_PATH = '../bin/PatchDock'
 DEFINE_GRAMM_PATH = '../bin/gramm'
 
 def get_pdb_file(pdbid, pdbfile=None, pdbpath=None, savepath=None):
+    locations = []
     if pdbpath == None:
         pdbpath = os.path.abspath(DEFINE_PDB_PATH)
     if pdbfile == None:
@@ -17,29 +18,34 @@ def get_pdb_file(pdbid, pdbfile=None, pdbpath=None, savepath=None):
         pdbfile = '%s.pdb'%pdbid
     if os.path.exists(pdbfile):
         return pdbfile
+    locations.append(pdbfile)
     ## try the file in the data path
     pdbfile = '%s/%s.pdb'%(pdbpath, pdbid)
     if os.path.exists(pdbfile):
         return pdbfile
+    locations.append(pdbfile)
     ## try the default path format in PDB
     pdbfile = pdbpath + '/%s/pdb%s.ent'%(pdbid[1:3].lower(), pdbid.lower())
     if os.path.exists(pdbfile+'.gz'): ## compressed file
         import gzip
         return gzip.open(pdbfile+'.gz', 'rb')
+    locations.append(pdbfile)
     ## try the given path
     if os.path.exists(pdbfile):
         return pdbfile
+    locations.append(pdbfile)
     ## try simpler path format
     pdbfile = pdbpath + '/pdb%s.ent'%pdbid.lower()
     if os.path.exists(pdbfile):
         return pdbfile
+    locations.append(pdbfile)
     ## try to download
     if savepath != None:
         os.system('wget http://www.rcsb.org/pdb/files/%s.pdb.gz'%pdbid.upper())
         os.system('mv %s.pdb.gz %s/%s/pdb%s.ent.gz'%
                   (pdbid.upper(), savepath, pdbid[1:3].lower(), pdbid.lower()))
     else:
-        raise IOError('Failed to locate PDB file for %s'%pdbid)
+        raise IOError('Failed to locate %s at:\n%s'%pdbid, '\n'.join(locations))
     return get_pdb_file(pdbid, pdbfile, savepath, savepath=None)
 
 class DockTool(object):
