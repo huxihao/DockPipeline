@@ -352,6 +352,8 @@ def main(para):
         ele = para['ListFormat'].split('/')
         val = line.split('\t')
         val[-1] = val[-1].strip() ## remove end of line
+        ch1 = ''
+        ch2 = ''
         re1 = None
         re2 = None
         for ee, v in zip(ele, val):

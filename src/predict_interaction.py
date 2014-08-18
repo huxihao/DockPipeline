@@ -28,7 +28,7 @@ def format_chains(id, pdb1='../data/modbase/mlh1.pdb', ch1=' ', pdb2='../data/mo
 
 def main(para):
     if 'ListSize' not in para:
-        para['ListSize'] = '-1'
+        para['ListSize'] = '5'
     if 'ThreadNum' not in para:
         para['ThreadNum'] = '1'
     if 'RandomSeed' not in para:
@@ -54,6 +54,7 @@ def main(para):
     ## Step 2: Dock and predict new
     if 'ListFile' not in para:
         para['ListFile'] = 'list_from_user.txt'
+        para['ListFormat'] = 'p1/p2/pdb1/ch1/pdb2/ch2'
         with open(para['ListFile'], 'w') as tempfile:
             tempfile.write('Hhp1\tTas3\t4HOK\tA\t3D1D\tA\n')
             #tempfile.write('Hhp1\tMoc3\t4HOK\tA\tMOC3_modbase\t \n')
@@ -62,7 +63,6 @@ def main(para):
     ## docking them and generate features
     import prepare_feature
     para2 = para.copy()
-    para2['ListFormat'] = 'p1/p2/pdb1/ch1/pdb2/ch2'
     prepare_feature.main(para2)
     feature_file = para2['OutFile']
 

@@ -1,0 +1,1 @@
+python src/predict_interaction.py ListFile=500_HBHQ_Docking_Candidates.txt ListFormat=P1/P2/PDB1/PDB2/L1/L2 ListSize=5 ThreadNum=2 &> out.txt &
