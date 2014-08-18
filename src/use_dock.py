@@ -29,7 +29,7 @@ def get_pdb_file(pdbid, pdbfile=None, pdbpath=None, savepath=None):
     if os.path.exists(pdbfile+'.gz'): ## compressed file
         import gzip
         return gzip.open(pdbfile+'.gz', 'rb')
-    locations.append(pdbfile)
+    locations.append(pdbfile+'.gz')
     ## try the given path
     if os.path.exists(pdbfile):
         return pdbfile
@@ -45,7 +45,8 @@ def get_pdb_file(pdbid, pdbfile=None, pdbpath=None, savepath=None):
         pdbsavepath = '%s/%s'%(savepath, pdbid[1:3].lower())
         if not os.path.exists(pdbsavepath):
             os.makedirs(pdbsavepath)
-        os.system('mv %s.pdb.gz %s/pdb%s.ent.gz'%(pdbid.upper(), pdbsavepath, pdbid))
+        os.system('mv %s.pdb.gz %s/pdb%s.ent.gz'%
+                  (pdbid.upper(), pdbsavepath, pdbid.lower()))
     else:
         raise IOError('Fail to file %s at:\n%s\n'%(pdbid,'\n'.join(locations)))
     return get_pdb_file(pdbid, pdbfile, savepath, savepath=None)
