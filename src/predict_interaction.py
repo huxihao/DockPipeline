@@ -44,38 +44,34 @@ def main(para):
     if 'PredictCutoff' not in para:
         para['PredictCutoff'] = '0.5'
 
-    ## Step 1: docking all pdb chain pairs and train
-    if not os.path.exists(para['ModelFile']):
+    ## Step 1: Train a model
+    if 'ModelName' in para and not os.path.exists(para['ModelFile']):
         import cross_validation
         para1 = para.copy()
         para1['SplitFold'] = '1'
         cross_validation.main(para1)
 
-    ## Step 2: docking new pairs and predict
-    ## prepare pdb pair list
-    pdblistfile = 'list_from_user.txt'
-    with open(pdblistfile, 'w') as tempfile:
-        tempfile.write('Hhp1\tTas3\t4HOK\tA\t3D1D\tA\n')
-        #tempfile.write('Hhp1\tMoc3\t4HOK\tA\tMOC3_modbase\t \n')
-        tempfile.write('Hhp1\tPpc89\t4HOK\tA\tPPC89_Modbase\t \n')
+    ## Step 2: Dock and predict new
+    if 'ListFile' not in para:
+        para['ListFile'] = 'list_from_user.txt'
+        with open(para['ListFile'], 'w') as tempfile:
+            tempfile.write('Hhp1\tTas3\t4HOK\tA\t3D1D\tA\n')
+            #tempfile.write('Hhp1\tMoc3\t4HOK\tA\tMOC3_modbase\t \n')
+            tempfile.write('Hhp1\tPpc89\t4HOK\tA\tPPC89_Modbase\t \n')
 
     ## docking them and generate features
-    feature_file = 'features_for_predicting.txt'
-    #if not os.path.exists(feature_file):
-    if True:
-        import prepare_feature
-        para2 = para.copy()
-        para2['ListFile'] = pdblistfile
-        para2['OutFile'] = feature_file
-        para2['ListFormat'] = 'p1/p2/pdb1/ch1/pdb2/ch2'
-        prepare_feature.main(para2)
+    import prepare_feature
+    para2 = para.copy()
+    para2['ListFormat'] = 'p1/p2/pdb1/ch1/pdb2/ch2'
+    prepare_feature.main(para2)
+    feature_file = para2['OutFile']
 
-    ## 2.c: predict their contact probabilities
+    ## predicted by machine learning
     from cross_validation import add_residue_label, model_predict
     add_residue_label(feature_file)
     predfile = model_predict(feature_file, model=para['ModelName'], mfile=para['ModelFile'])
     
-    ## Step 3: get predicted values for each residue
+    ## Step 3: Summary
     from cross_validation import map_pdb_residue
     residue_value = map_pdb_residue(predfile)
     with open(para['ExeFile']+'data.txt', 'w') as outfile:
