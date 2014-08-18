@@ -73,6 +73,7 @@ class DockTool(object):
         pdb_path = os.path.abspath(DEFINE_PDB_PATH)
         if len(pdbid) != 4:
             pdb_path = os.path.abspath(DEFINE_MOD_PATH)
+            download = False
         warnings.filterwarnings("ignore")
         if download:
             pdbfile = get_pdb_file(pdbid, thefile, pdb_path, pdb_path)
