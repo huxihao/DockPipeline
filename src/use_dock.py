@@ -42,8 +42,10 @@ def get_pdb_file(pdbid, pdbfile=None, pdbpath=None, savepath=None):
     ## try to download
     if savepath != None:
         os.system('wget http://www.rcsb.org/pdb/files/%s.pdb.gz'%pdbid.upper())
-        os.system('mv %s.pdb.gz %s/%s/pdb%s.ent.gz'%
-                  (pdbid.upper(), savepath, pdbid[1:3].lower(), pdbid.lower()))
+        pdbsavepath = '%s/%s'%(savepath, pdbid)
+        if not os.path.exists(pdbsavepath):
+            os.mkdirs(pdbsavepath)
+        os.system('mv %s.pdb.gz %s/pdb%s.ent.gz'%(pdbid.upper(), pdbsavepath, pdbid))
     else:
         raise IOError('Fail to file %s at:\n%s\n'%(pdbid,'\n'.join(locations)))
     return get_pdb_file(pdbid, pdbfile, savepath, savepath=None)
