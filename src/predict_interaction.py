@@ -38,7 +38,7 @@ def main(para):
     if 'ModelFile' not in para:
         para['ModelFile'] = 'set1_all_new.txt.fea.max.RF-bin'
     if 'DockMethod' not in para:
-        para['FeatureType'] = 'SaveResidue'
+        para['FeatureType'] = 'SaveZDOCK'
     if 'SolutionNum' not in para:
         para['SolutionNum'] = '10'
     if 'PredictCutoff' not in para:

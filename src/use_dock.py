@@ -4,7 +4,7 @@ import re
 import warnings
 
 DEFINE_PDB_PATH = '../data/pdb'
-DEFINE_MOD_PATH = '../data/modbase'
+DEFINE_MOD_PATH = '../data/single_structures'
 DEFINE_ZDOCK_PATH = '../bin/zdock3.0.2_linux_x64'
 DEFINE_PATCHDOCK_PATH = '../bin/PatchDock'
 DEFINE_GRAMM_PATH = '../bin/gramm'
