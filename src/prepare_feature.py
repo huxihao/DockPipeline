@@ -346,12 +346,12 @@ def main(para):
 
     ## Generate task list
     listfile = open(para['ListFile'], 'r')
-    cc = 0
+    cc = -1
     par = []
     for line in listfile:
+        cc += 1
         if cc < int(para['SkipSize']): continue
         if cc == int(para['ListSize']): break
-        cc += 1
         ele = para['ListFormat'].split('/')
         val = line.split('\t')
         val[-1] = val[-1].strip() ## remove end of line
