@@ -4,7 +4,7 @@ from multiprocessing import Pool ## required by each file
 def train_model(datafile, model='LR', mfile=None):
     if mfile == None:
         mfile = datafile+'.'+model
-    r_file = 'temp_script_train_'+mfile+'.r'
+    r_file = 'temp_script_train_'+model+'.r'
     f = open(r_file, 'w')
     f.write(r'''
 data = read.table("'''+datafile+r'''", header=FALSE)
@@ -82,7 +82,7 @@ save(m, file="'''+mfile+r'''")
 def model_predict(datafile, model='LR', mfile='model_file', outfile=None):
     if outfile == None:
         outfile = datafile + '.out'
-    r_file = 'temp_script_predict_'+mfile+'.r'
+    r_file = 'temp_script_predict_'+model+'.r'
     f = open(r_file, 'w')
     f.write(r'''
 data = read.table("'''+datafile+r'''", header=FALSE)
