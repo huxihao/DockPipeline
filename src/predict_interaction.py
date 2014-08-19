@@ -67,6 +67,7 @@ def main(para):
     ## docking them and generate features
     import prepare_feature
     para2 = para.copy()
+    para2['ListFile'] = para['NewList']
     prepare_feature.main(para2)
     feature_file = para2['OutFile']
 
