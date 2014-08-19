@@ -52,10 +52,10 @@ def main(para):
         cross_validation.main(para1)
 
     ## Step 2: Dock and predict new
-    if 'ListFile' not in para:
-        para['ListFile'] = 'list_from_user.txt'
+    if 'NewList' not in para:
+        para['NewList'] = 'list_from_user.txt'
         para['ListFormat'] = 'p1/p2/pdb1/ch1/pdb2/ch2'
-        with open(para['ListFile'], 'w') as tempfile:
+        with open(para['NewList'], 'w') as tempfile:
             tempfile.write('Hhp1\tTas3\t4HOK\tA\t3D1D\tA\n')
             #tempfile.write('Hhp1\tMoc3\t4HOK\tA\tMOC3_modbase\t \n')
             tempfile.write('Hhp1\tPpc89\t4HOK\tA\tPPC89_Modbase\t \n')
