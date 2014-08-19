@@ -33,10 +33,10 @@ def main(para):
         para['ThreadNum'] = '1'
     if 'RandomSeed' not in para:
         para['RandomSeed'] = '2014'
-#    if 'ModelName' not in para:
-#        para['ModelName'] = 'RF-bin'
+    if 'ModelName' not in para:
+        para['ModelName'] = 'RF-bin'
     if 'ModelFile' not in para:
-        para['ModelFile'] = 'set1_all_new.txt.fea.max.RF-bin'
+        para['ModelFile'] = 'set1_cmp.txt.fea.max.RF-bin'
     if 'DockMethod' not in para:
         para['FeatureType'] = 'SaveZDOCK'
     if 'SolutionNum' not in para:

@@ -439,7 +439,7 @@ def get_res_labels(para):
 
 def main(para):
     if 'ListFile' not in para:
-        para['ListFile'] = 'set1_all_new.txt' 
+        para['ListFile'] = '../data/set1_cmp.txt' 
     if 'SplitFold' not in para:
         para['SplitFold'] = '10'
     if 'SolutionNum' not in para:
@@ -449,7 +449,7 @@ def main(para):
     if 'ThreadNum' not in para:
         para['ThreadNum'] = '1'
     if 'FeatureType' not in para:
-        para['FeatureType'] = 'SaveResidue'
+        para['FeatureType'] = 'SaveZDOCK'
     if 'ModelName' not in para:
         para['ModelName'] = 'RF-bin'
     train_list = [] ## unique pdb list for training
