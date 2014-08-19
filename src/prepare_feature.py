@@ -308,6 +308,8 @@ def main(para):
         para['PoolPath'] = para['DataPath'] + '/dock_pool'
     if 'ListFile' not in para:
         para['ListFile'] = para['DataPath'] + '/pdb_list_example.txt'
+    if 'SkipSize' not in para:
+        para['SkipSize'] = '0'
     if 'ListSize' not in para:
         para['ListSize'] = '2'
     if 'ListFormat' not in para:
@@ -347,6 +349,7 @@ def main(para):
     cc = 0
     par = []
     for line in listfile:
+        if cc < int(para['SkipSize']): continue
         if cc == int(para['ListSize']): break
         cc += 1
         ele = para['ListFormat'].split('/')
