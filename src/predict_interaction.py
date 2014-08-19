@@ -39,7 +39,7 @@ def main(para):
         para['ModelName'] = 'RF-bin'
     if 'ModelFile' not in para:
         para['ModelFile'] = para['ListFile']+'.fea.max.'+para['ModelName']
-    if 'DockMethod' not in para:
+    if 'FeatureType' not in para:
         para['FeatureType'] = 'SaveZDOCK'
     if 'SolutionNum' not in para:
         para['SolutionNum'] = '10'
