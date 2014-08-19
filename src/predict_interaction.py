@@ -52,6 +52,8 @@ def main(para):
         para1 = para.copy()
         para1['SplitFold'] = '1'
         cross_validation.main(para1)
+    else:
+        print 'Load model file', para['ModelFile']
 
     ## Step 2: Dock and predict new
     if 'NewList' not in para:
