@@ -33,10 +33,12 @@ def main(para):
         para['ThreadNum'] = '1'
     if 'RandomSeed' not in para:
         para['RandomSeed'] = '2014'
+    if 'ListFile' not in para:
+        para['ListFile'] = '../data/set1_cmp.txt'
     if 'ModelName' not in para:
         para['ModelName'] = 'RF-bin'
     if 'ModelFile' not in para:
-        para['ModelFile'] = 'set1_cmp.txt.fea.max.RF-bin'
+        para['ModelFile'] = para['ListFile']+'.fea.max.'+para['ModelName']
     if 'DockMethod' not in para:
         para['FeatureType'] = 'SaveZDOCK'
     if 'SolutionNum' not in para:

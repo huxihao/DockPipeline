@@ -4,6 +4,4 @@ src/*.swp
 data/*
 !data/500_HBHQ_Docking_Candidates.txt
 !data/set1_cmp.txt
-!data/Intres_052914.txt
-!data/Uniprot_longest_052914.txt
 result/*
