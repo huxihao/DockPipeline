@@ -3,5 +3,6 @@ src/*.pyc
 src/*.swp
 data/*
 !data/500_HBHQ_Docking_Candidates.txt
+!data/rest_HBHQ_Docking_Candidates.txt
 !data/set1_cmp.txt
 result/*
