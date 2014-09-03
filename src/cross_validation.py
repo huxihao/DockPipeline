@@ -439,7 +439,7 @@ def get_res_labels(para):
 
 def main(para):
     if 'ListFile' not in para:
-        para['ListFile'] = '../data/set1_cmp.txt' 
+        para['ListFile'] = '../data/set1_cmp_test.txt' 
     if 'SplitFold' not in para:
         para['SplitFold'] = '10'
     if 'SolutionNum' not in para:
