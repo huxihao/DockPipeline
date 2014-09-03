@@ -228,8 +228,9 @@ def comparison(para, outname='evaluate_raw.txt'):
         auprc, TPR, PPV, pc = performance(x, y, x='TPR', y='PPV')
         show(auprc)
         with open(dname+'_InterfaceResidue.txt', 'w') as tempfile:
-            for a in zip(PPV, TPR, FPR):
-                tempfile.write('%s\t%s\t%s\n'%a)
+            tempfile.write('PPV\tTPR\tFPR\tCutoff\n')
+            for a in zip(PPV, TPR, FPR, pc):
+                tempfile.write('%s\t%s\t%s\t%s\n'%a)
 
         #######################################################################
         ## Evalute domain-domain interaction
@@ -255,8 +256,9 @@ def comparison(para, outname='evaluate_raw.txt'):
         auprc, TPR, PPV, pc = performance(real, pred, x='TPR', y='PPV')
         show(auprc)
         with open(dname+'_DomainPair.txt', 'w') as tempfile:
-            for a in zip(PPV, TPR, FPR):
-                tempfile.write('%s\t%s\t%s\n'%a)
+            tempfile.write('PPV\tTPR\tFPR\tCutoff\n')
+            for a in zip(PPV, TPR, FPR, pc):
+                tempfile.write('%s\t%s\t%s\t%s\n'%a)
         ####### Repeat using interface domains
         real = []; pred = []; info = []
         for p1p2 in pp:

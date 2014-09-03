@@ -86,20 +86,19 @@ def main(para):
     idx, val1, val2 = read_residue_data(para['ExeFile']+'data.txt')
     pp_val = group_residue(idx, val2) ## using predicted value
 
-    for p1, p2 in pp_val:
-        res = pp_val[(p1,p2)]
-        pp = list(set([r.split(':')[0] for r in res]))
-        if True: ## reformat protein names
-            if p1 == p2 and len(pp) == 1:
-                p1 = pp
-                p2 = pp
-            elif len(pp) == 2:
-                p1 = pp[0]
-                p2 = pp[1]
-            else:
-                print 'Failed to map', p1, p2, pp
-        show(p1)
-        show(p2)
+    listfile = open(para['NewList'], 'r')
+    for line in listfile:
+        ele = line.split()
+        p1 = ele[0]; p2 = ele[1]
+        s1 = ele[2]; s2 = ele[3]
+        show([p1,p2,s1,s2])
+        if (s1,s2) in pp_val:
+            res = pp_val[(s1,s2)]
+        elif (s2,s1) in pp_val:
+            res = pp_val[(s2,s1)]
+        else:
+            show('Docking\tFailed\n')
+            continue
         int1 = [r for r in res if r.split(':')[0]==p1 and res[r] >= float(para['PredictCutoff'])]
         int2 = [r for r in res if r.split(':')[0]==p2 and res[r] >= float(para['PredictCutoff'])]
         ord1 = sorted([int(r.split(':')[-1]) for r in int1])
@@ -107,5 +106,6 @@ def main(para):
         show(','.join([str(i) for i in ord1]))
         show(','.join([str(i) for i in ord2]))
         show()
+    listfile.close()
 
 if __name__ == "__main__": main_fun(main)
