@@ -92,15 +92,14 @@ def main(para):
         p1 = ele[0]; p2 = ele[1]
         s1 = ele[2]; s2 = ele[3]
         show([p1,p2,s1,s2])
-        if (s1,s2) in pp_val:
-            res = pp_val[(s1,s2)]
-        elif (s2,s1) in pp_val:
-            res = pp_val[(s2,s1)]
-        else:
+        if (p1,p2) in pp_val:
+            res = pp_val[(p1,p2)]
             show('Docking\tFailed\n')
             continue
-        int1 = [r for r in res if r.split(':')[0]==p1 and res[r] >= float(para['PredictCutoff'])]
-        int2 = [r for r in res if r.split(':')[0]==p2 and res[r] >= float(para['PredictCutoff'])]
+        int1 = [r for r in res if (r.split(':')[0]==p1 or r.split(':')[0]==s1)
+                                  and res[r] >= float(para['PredictCutoff'])]
+        int2 = [r for r in res if (r.split(':')[0]==p2 or r.split(':')[0]==s2)
+                                  and res[r] >= float(para['PredictCutoff'])]
         ord1 = sorted([int(r.split(':')[-1]) for r in int1])
         ord2 = sorted([int(r.split(':')[-1]) for r in int2])
         show(','.join([str(i) for i in ord1]))
