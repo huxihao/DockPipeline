@@ -275,22 +275,6 @@ def save_zdock(info, pdb1, ch1, pdb2, ch2, sol_num=5, dock_pool='.'):
     'Binary ~ ZDOCK solution'
     return feature_area(info, zdock_area(info, pdb1, ch1, pdb2, ch2, sol_num, dock_pool)[0][0], sol_num)
 
-def save_zdock_pdb(info, pdb1, ch1, pdb2, ch2, sol_num=5, dock_pool='.'):
-    from use_dock import UseZDOCK
-    dock = UseZDOCK(pool_path=dock_pool)
-    infilename, linenum = dock_area(dock, info, pdb1, ch1, pdb2, ch2, sol_num, skip=True)[0]
-    dock.prepare_data(pdb1, ch1, pdb2, ch2)
-    if os.path.exists(dock.solution) and dock.solution_number() >= sol_num:
-        sfiles = dock.generate_complex(sol_num)
-        from shutil import copy
-        copy(dock.solution, 'zdock_pool/'+dock.solution.split('/')[-1])
-        copy(infilename, 'zdock_pool/'+infilename.split('/')[-1])
-        for i in xrange(sol_num):
-            copy(sfiles[i], 'zdock_pdbs/%s-%s-%s-%s-ZDOCK-%d.pdb'%(pdb1,ch1,pdb2,ch2,i+1))
-    output = feature_area(info, infilename, sol_num)
-    dock.clean_temp_path()
-    return output
-
 def save_zdock_rcf(info, pdb1, ch1, pdb2, ch2, sol_num=5, dock_pool='.'):
     'Binary ~ ZDOCK solution'
     return feature_rcf(info, zdock_area(info, pdb1, ch1, pdb2, ch2, sol_num, dock_pool)[0][0],
@@ -308,6 +292,28 @@ def save_all_features(info, pdb1, ch1, pdb2, ch2, sol_num=5, dock_pool='.'):
 #    f4 = feature_area(info, patchdock_area(info, pdb1, ch1, pdb2, ch2, sol_num, dock_pool)[0][0], sol_num)
     if f1 == [] or f2 == [] or f3 == []: return []
     return [a1+a2[1:]+a3[1:] for a1,a2,a3 in zip(f1,f2,f3)]
+
+def save_final(info, pdb1, ch1, pdb2, ch2, sol_num=5, dock_pool='.'):
+    from use_dock import UseZDOCK
+    dock = UseZDOCK(pool_path=dock_pool)
+    area_file = dock_area(dock, info, pdb1, ch1, pdb2, ch2, sol_num, skip=True)[0][0]
+    rcf_file = zdock_rcf(info, pdb1, ch1, pdb2, ch2, sol_num, dock_pool)[0][0]
+    f1 = feature_rcf(info, area_file, rcf_file)
+    f2 = feature_area(info, area_file, sol_num)
+    f3 = feature_residue(info, area_file)
+    if f1 == [] or f2 == [] or f3 == []: return []
+    else: output = [a1+a2[1:]+a3[1:] for a1,a2,a3 in zip(f1,f2,f3)]
+    dock.prepare_data(pdb1, ch1, pdb2, ch2)
+    if True: ## save them
+        sfiles = dock.generate_complex(sol_num)
+        from shutil import copy
+        copy(dock.solution, 'zdock_pool/'+dock.solution.split('/')[-1])
+        copy(area_file, 'zdock_pool/'+area_file.split('/')[-1])
+        copy(rcf_file, 'zdock_pool/'+rcf_file.split('/')[-1])
+        for i in xrange(sol_num):
+            copy(sfiles[i], 'zdock_pdbs/%s-%s-%s-%s-ZDOCK-%d.pdb'%(pdb1,ch1,pdb2,ch2,i+1))
+    dock.clean_temp_path()
+    return output
 
 def save_data_set(filename, data_set):
     cc = 0
@@ -355,10 +361,10 @@ def main(para):
            'PatchDock_clean': patchdock_clean,
            'SaveSequence': save_sequence,
            'SaveZDOCK': save_zdock,
-           'SaveZDOCK_pdb': save_zdock_pdb,
            'SaveRCF': save_zdock_rcf,
            'SavePatchDock': save_patchdock,
            'SaveResidue': save_all_features,
+           'SaveFinal': save_final,
            }
     if para['FeatureType'] not in fun:
         raise ValueError('FeatureType must be within %s'%fun.keys())
