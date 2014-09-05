@@ -259,7 +259,7 @@ def map_pdb_residue(filename, listname, useidx=1):
         if res.count(':') == 2:
             pdb, ch, pos = res.split(':')
             if (pdb,ch) in sup_map:
-                res = sup_map.get[(pdb,ch)]+':'+pos
+                res = sup_map[(pdb,ch)]+':'+pos
         if (pp, res) in comb and comb[(pp, res)] > val:
             continue ## no need to update if having a larger value
         comb[(pp, res)] = val
@@ -303,7 +303,7 @@ def combine_pdb_residue(filename, listname=None, outname=None):
         if res.count(':') == 2:
             pdb, ch, pos = res.split(':')
             if (pdb,ch) in sup_map:
-                res = sup_map.get[(pdb,ch)]+':'+pos
+                res = sup_map[(pdb,ch)]+':'+pos
         if (pp,res) in comb:
             maxv = []
             for i,j in zip(comb[(pp,res)], vals):
