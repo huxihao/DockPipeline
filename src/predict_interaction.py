@@ -78,7 +78,7 @@ def main(para):
     
     ## Step 3: Summary
     from cross_validation import map_pdb_residue
-    residue_value = map_pdb_residue(predfile)
+    residue_value = map_pdb_residue(predfile, para2['ListFile'])
     with open(para['ExeFile']+'data.txt', 'w') as outfile:
         for g1g2, res, val in residue_value:
             outfile.write('%s\t%s\t-1\t%s\n'%('\t'.join(g1g2.split('=')), res, val))
@@ -99,10 +99,8 @@ def main(para):
         outfile.write('\t'.join([p1,p2,s1,s2]))
         cc1 += 1
         res = pp_val[(p1,p2)]
-        int1 = [r for r in res if (r.split(':')[0]==p1 or r.split(':')[0]==s1)
-                                  and res[r] >= float(para['PredictCutoff'])]
-        int2 = [r for r in res if (r.split(':')[0]==p2 or r.split(':')[0]==s2)
-                                  and res[r] >= float(para['PredictCutoff'])]
+        int1 = [r for r in res if r.split(':')[0]==p1 and res[r] >= float(para['PredictCutoff'])]
+        int2 = [r for r in res if r.split(':')[0]==p2 and res[r] >= float(para['PredictCutoff'])]
         ord1 = sorted([int(r.split(':')[-1]) for r in int1])
         ord2 = sorted([int(r.split(':')[-1]) for r in int2])
         outfile.write('\t'+','.join([str(i) for i in ord1]))

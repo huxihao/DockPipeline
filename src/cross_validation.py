@@ -221,7 +221,7 @@ def split_data(datafile, fold, seed=2014):
         testfile.close()
         yield train_name, test_name
 
-def map_pdb_residue(filename, useidx=1):
+def map_pdb_residue(filename, listname, useidx=1):
     ''' Input file format:
             for each line:
                 p1=p2,index,pdb:chain:pos   value others
@@ -247,24 +247,42 @@ def map_pdb_residue(filename, useidx=1):
     infile.close()
     from map_pdb_res import pdblist_to_uniprot
     res_map = pdblist_to_uniprot(pdblist)
-    union = {} ## combine sources
-    for pair, res, val in data:
-        res = res_map.get(res, res) ## update residue if mappable
-        if (pair, res) in union and union[(pair, res)] > val:
+    sup_map = {} ## supplimentary residue map from the input list
+    with open(listname, 'r') as tempfile:
+        for line in tempfile:
+            ele = line.split('\t')
+            p1 = ele[0]
+            p2 = ele[1]
+            s1 = ele[3]
+            s2 = ele[5]
+            if len(s1) > 1:
+                sup_map[s1] = p1
+            if len(s2) > 1:
+                sup_map[s2] = p2
+    comb = {}
+    for pp, res, vals in data:
+        if res in res_map:
+            res = res_map[res]
+        elif res in sup_map:
+            pdb, ch, pos = res.split(':')
+            res = sup_map+':'+pos
+        if (pp, res) in comb and comb[(pp, res)] > val:
             continue ## no need to update if having a larger value
-        union[(pair, res)] = val
+        comb[(pp, res)] = val
     output = []
-    for pair, res in union:
-        output.append((pair, res, union[(pair, res)]))
+    for pp, res in comb:
+        output.append((pp, res, comb[(pp, res)]))
     output.sort()
     return output
 
-def combine_pdb_residue(filename, outname=None):
+def combine_pdb_residue(filename, listname=None outname=None):
     ''' Combine the features vectors from prepare_feature functions
         by taking the maximum values for PDB residues mapped to the same
         resiude in a protein pair.
         Output is a file with the same format
     '''
+    if listname == None:
+        listname = filename.replace('.fea','')
     if outname == None:
         outname = filename + '.max'
     data = []
@@ -280,7 +298,7 @@ def combine_pdb_residue(filename, outname=None):
     from map_pdb_res import pdblist_to_uniprot
     res_map = pdblist_to_uniprot(pdblist)
     sup_map = {} ## supplimentary residue map from the input list
-    with open(filename.replace('.fea',''), 'r') as tempfile:
+    with open(listname, 'r') as tempfile:
         for line in tempfile:
             ele = line.split('\t')
             p1 = ele[0]
@@ -517,10 +535,10 @@ def main(para):
         ## Save values
         if not os.path.exists(outfile):
             continue ## skip this fold
-        pred_value += map_pdb_residue(outfile)
+        pred_value += map_pdb_residue(outfile, test)
         for idx in other_vals:
             values = other_vals[idx]
-            values += map_pdb_residue(resfile, useidx=idx)
+            values += map_pdb_residue(resfile, test, useidx=idx)
             other_vals[idx] = values
         show()
         if para['SplitFold'] != '1':
