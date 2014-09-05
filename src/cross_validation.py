@@ -250,8 +250,8 @@ def map_pdb_residue(filename, listname, useidx=1):
     sup_map = {} ## supplimentary residue map from the input list
     with open(listname, 'r') as tempfile:
         for line in tempfile:
-            p,s,c = line.strip().split()
-            sup_map[(s,c)] = p
+            p,s,c = line.split()
+            sup_map[(s,c.strip())] = p
     comb = {}
     for pp, res, vals in data:
         if res in res_map:
@@ -294,8 +294,8 @@ def combine_pdb_residue(filename, listname=None, outname=None):
     sup_map = {} ## supplimentary residue map from the input list
     with open(listname, 'r') as tempfile:
         for line in tempfile:
-            p,s,c = line.strip().split()
-            sup_map[(s,c)] = p
+            p,s,c = line.split()
+            sup_map[(s,c.strip())] = p
     comb = {}
     for pp, res, vals in data:
         if res in res_map:
