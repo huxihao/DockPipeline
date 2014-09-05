@@ -96,7 +96,7 @@ def main(para):
         if (p1,p2) not in pp_val:
             cc2 += 1
             continue
-        outfile.write('\t'.join([p1,p2,s1,s2]))
+        outfile.write('\t'.join([p1,p2,s1,s2,'%s--%s--ZDOCK-'%(s1,s2)]))
         cc1 += 1
         res = pp_val[(p1,p2)]
         int1 = [r for r in res if r.split(':')[0]==p1 and res[r] >= float(para['PredictCutoff'])]

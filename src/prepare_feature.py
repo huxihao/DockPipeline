@@ -283,8 +283,10 @@ def save_zdock_pdb(info, pdb1, ch1, pdb2, ch2, sol_num=5, dock_pool='.'):
     if os.path.exists(dock.solution) and dock.solution_number() >= sol_num:
         sfiles = dock.generate_complex(sol_num)
         from shutil import copy
+        copy(dock.solution, 'zdock_pool/'+dock.solution.split('/')[-1])
+        copy(infilename, 'zdock_pool/'+infilename.split('/')[-1])
         for i in xrange(sol_num):
-            copy(sfiles[i], 'zdock_pdbs/%s-%s-%s-%s-ZDOCK-%00d.pdb'%(pdb1,ch1,pdb2,ch2,i+1))
+            copy(sfiles[i], 'zdock_pdbs/%s-%s-%s-%s-ZDOCK-%d.pdb'%(pdb1,ch1,pdb2,ch2,i+1))
     output = feature_area(info, infilename, sol_num)
     dock.clean_temp_path()
     return output
