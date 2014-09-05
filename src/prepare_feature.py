@@ -275,6 +275,20 @@ def save_zdock(info, pdb1, ch1, pdb2, ch2, sol_num=5, dock_pool='.'):
     'Binary ~ ZDOCK solution'
     return feature_area(info, zdock_area(info, pdb1, ch1, pdb2, ch2, sol_num, dock_pool)[0][0], sol_num)
 
+def save_zdock_pdb(info, pdb1, ch1, pdb2, ch2, sol_num=5, dock_pool='.'):
+    from use_dock import UseZDOCK
+    dock = UseZDOCK(pool_path=pool)
+    infilename, linenum = dock_area(dock, info, pdb1, ch1, pdb2, ch2, sol_num, skip=True)[0]
+    dock.prepare_data(pdb1, ch1, pdb2, ch2)
+    if os.path.exists(dock.solution) and dock.solution_number() >= sol_num:
+        sfiles = dock.generate_complex(sol_num)
+        from shutil import copy
+        for i in xrange(sol_num):
+            copy(sfiles[i], 'zdock_pdbs/%s_%s_%s_%s_ZDOCK-%00s'%(pdb1,ch1,pdb2,ch2,i+1))
+    output = feature_area(info, infilename, sol_num)
+    dock.clean_temp_path()
+    return output
+
 def save_zdock_rcf(info, pdb1, ch1, pdb2, ch2, sol_num=5, dock_pool='.'):
     'Binary ~ ZDOCK solution'
     return feature_rcf(info, zdock_area(info, pdb1, ch1, pdb2, ch2, sol_num, dock_pool)[0][0],
@@ -339,6 +353,7 @@ def main(para):
            'PatchDock_clean': patchdock_clean,
            'SaveSequence': save_sequence,
            'SaveZDOCK': save_zdock,
+           'SaveZDOCK_pdb': save_zdock_pdb,
            'SaveRCF': save_zdock_rcf,
            'SavePatchDock': save_patchdock,
            'SaveResidue': save_all_features,
