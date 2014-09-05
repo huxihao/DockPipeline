@@ -521,10 +521,10 @@ def main(para):
         ## Save values
         if not os.path.exists(outfile):
             continue ## skip this fold
-        pred_value += map_pdb_residue(outfile, test)
+        pred_value += map_pdb_residue(outfile, para2['MapFile'])
         for idx in other_vals:
             values = other_vals[idx]
-            values += map_pdb_residue(resfile, test, useidx=idx)
+            values += map_pdb_residue(resfile, para2['MapFile'], useidx=idx)
             other_vals[idx] = values
         show()
         if para['SplitFold'] != '1':

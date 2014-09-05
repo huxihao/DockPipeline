@@ -325,6 +325,10 @@ def main(para):
         para['SolutionNum'] = '10'
     if 'ThreadNum' not in para:
         para['ThreadNum'] = '1'
+    if 'OutFile' not in para:
+        para['OutFile'] = para['ListFile'] + '.fea'
+    if 'MapFile' not in para:
+        para['MapFile'] = para['ListFile'] + '.map'
     if not os.path.exists(para['PoolPath']):
         os.mkdir(para['PoolPath'])
 
@@ -342,11 +346,9 @@ def main(para):
     if para['FeatureType'] not in fun:
         raise ValueError('FeatureType must be within %s'%fun.keys())
 
-    outfile = para['ListFile'] + '.fea'
-    mapfile = para['ListFile'] + '.map'
     ## Generate task list
     listfile = open(para['ListFile'], 'r')
-    ppdbfile = open(mapfile, 'w')
+    ppdbfile = open(para['MapFile'], 'w')
     cc = -1
     par = []
     for line in listfile:
@@ -400,8 +402,8 @@ def main(para):
         data_set = [fun[para['FeatureType']](*p) for p in par]
     ## Save all results
     if para['FeatureType'].find('_clean') >= 0:
-        save_data_set(outfile+'.log', data_set)
+        save_data_set(para['OutFile']+'.log', data_set)
     else:
-        save_data_set(outfile, data_set)
+        save_data_set(para['OutFile'], data_set)
 
 if __name__ == "__main__": main_fun(main)

@@ -78,7 +78,7 @@ def main(para):
     
     ## Step 3: Summary
     from cross_validation import map_pdb_residue
-    residue_value = map_pdb_residue(predfile, para2['ListFile'])
+    residue_value = map_pdb_residue(predfile, para2['MapFile'])
     with open(para['ExeFile']+'data.txt', 'w') as outfile:
         for g1g2, res, val in residue_value:
             outfile.write('%s\t%s\t-1\t%s\n'%('\t'.join(g1g2.split('=')), res, val))
