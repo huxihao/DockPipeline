@@ -51,6 +51,7 @@ def main(para):
         import cross_validation
         para1 = para.copy()
         para1['SplitFold'] = '1'
+        para1['ListSize'] = '-1'
         cross_validation.main(para1)
     else:
         print 'Load model file', para['ModelFile']
