@@ -250,22 +250,16 @@ def map_pdb_residue(filename, listname, useidx=1):
     sup_map = {} ## supplimentary residue map from the input list
     with open(listname, 'r') as tempfile:
         for line in tempfile:
-            ele = line.split('\t')
-            p1 = ele[0]
-            p2 = ele[1]
-            s1 = ele[3]
-            s2 = ele[5]
-            if len(s1) > 1:
-                sup_map[s1] = p1
-            if len(s2) > 1:
-                sup_map[s2] = p2
+            p,s,c = line.strip().split()
+            sup_map[(s,c)] = p
     comb = {}
-    for pp, res, val in data:
+    for pp, res, vals in data:
         if res in res_map:
             res = res_map[res]
-        elif res in sup_map:
+        if res.count(':') == 2:
             pdb, ch, pos = res.split(':')
-            res = sup_map[res]+':'+pos
+            if (pdb,ch) in sup_map:
+                res = sup_map.get[(pdb,ch)]+':'+pos
         if (pp, res) in comb and comb[(pp, res)] > val:
             continue ## no need to update if having a larger value
         comb[(pp, res)] = val
@@ -282,7 +276,7 @@ def combine_pdb_residue(filename, listname=None, outname=None):
         Output is a file with the same format
     '''
     if listname == None:
-        listname = filename.replace('.fea','')
+        listname = filename.replace('.fea','.map')
     if outname == None:
         outname = filename + '.max'
     data = []
@@ -300,22 +294,16 @@ def combine_pdb_residue(filename, listname=None, outname=None):
     sup_map = {} ## supplimentary residue map from the input list
     with open(listname, 'r') as tempfile:
         for line in tempfile:
-            ele = line.split('\t')
-            p1 = ele[0]
-            p2 = ele[1]
-            s1 = ele[3]
-            s2 = ele[5]
-            if len(s1) > 1:
-                sup_map[s1] = p1
-            if len(s2) > 1:
-                sup_map[s2] = p2
+            p,s,c = line.strip().split()
+            sup_map[(s,c)] = p
     comb = {}
     for pp, res, vals in data:
         if res in res_map:
             res = res_map[res]
-        elif res in sup_map:
+        if res.count(':') == 2:
             pdb, ch, pos = res.split(':')
-            res = sup_map[res]+':'+pos
+            if (pdb,ch) in sup_map:
+                res = sup_map.get[(pdb,ch)]+':'+pos
         if (pp,res) in comb:
             maxv = []
             for i,j in zip(comb[(pp,res)], vals):
@@ -513,7 +501,6 @@ def main(para):
         para2 = para.copy() ## copy parameters
         para2['ListFile'] = train
         para2['ListSize'] = '-1'
-        para2['OutFile'] = train + '.fea'
         para2['ListFormat'] = 'p1/p2/pdb1/ch1/pdb2/ch2'
         prepare_feature.main(para2)
         resfile = combine_pdb_residue(para2['OutFile'])
@@ -525,7 +512,6 @@ def main(para):
         ## Test
         show(test, False)
         para2['ListFile'] = test
-        para2['OutFile'] = test + '.fea'
         prepare_feature.main(para2)
         resfile = combine_pdb_residue(para2['OutFile'])
         #resfile = add_more_info(resfile, train_ddi)
