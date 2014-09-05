@@ -44,7 +44,7 @@ def main(para):
     if 'SolutionNum' not in para:
         para['SolutionNum'] = '10'
     if 'PredictCutoff' not in para:
-        para['PredictCutoff'] = '0.5'
+        para['PredictCutoff'] = '0.218'
 
     ## Step 1: Train a model
     if 'ModelName' in para and not os.path.exists(para['ModelFile']):
