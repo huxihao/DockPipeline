@@ -251,15 +251,15 @@ def map_pdb_residue(filename, listname, useidx=1):
     with open(listname, 'r') as tempfile:
         for line in tempfile:
             p,s,c = line.split('\t')
-            sup_map[(s,c.strip())] = p
+            sup_map[s] = p
     comb = {}
     for pp, res, val in data:
         if res in res_map:
             res = res_map[res]
-        if res.count(':') == 2:
+        elif res.count(':') == 2:
             pdb, ch, pos = res.split(':')
-            if (pdb,ch) in sup_map:
-                res = sup_map[(pdb,ch)]+':'+pos
+            if pdb in sup_map:
+                res = sup_map[pdb]+':'+pos
         if (pp, res) in comb and comb[(pp, res)] > val:
             continue ## no need to update if having a larger value
         comb[(pp, res)] = val
@@ -295,15 +295,15 @@ def combine_pdb_residue(filename, listname=None, outname=None):
     with open(listname, 'r') as tempfile:
         for line in tempfile:
             p,s,c = line.split('\t')
-            sup_map[(s,c.strip())] = p
+            sup_map[s] = p
     comb = {}
     for pp, res, vals in data:
         if res in res_map:
             res = res_map[res]
         if res.count(':') == 2:
             pdb, ch, pos = res.split(':')
-            if (pdb,ch) in sup_map:
-                res = sup_map[(pdb,ch)]+':'+pos
+            if pdb in sup_map:
+                res = sup_map[pdb]+':'+pos
         if (pp,res) in comb:
             maxv = []
             for i,j in zip(comb[(pp,res)], vals):
