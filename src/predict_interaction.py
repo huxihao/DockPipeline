@@ -91,11 +91,11 @@ def main(para):
         ele = line.split()
         p1 = ele[0]; p2 = ele[1]
         s1 = ele[2]; s2 = ele[3]
-        if (p1,p2) in pp_val:
-            res = pp_val[(p1,p2)]
+        if (p1,p2) not in pp_val:
             #show('Docking\tFailed\n')
             continue
         show([p1,p2,s1,s2])
+        res = pp_val[(p1,p2)]
         int1 = [r for r in res if (r.split(':')[0]==p1 or r.split(':')[0]==s1)
                                   and res[r] >= float(para['PredictCutoff'])]
         int2 = [r for r in res if (r.split(':')[0]==p2 or r.split(':')[0]==s2)
