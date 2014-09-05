@@ -283,9 +283,25 @@ def combine_pdb_residue(filename, outname=None):
             data.append([pp, res, vals])
     from map_pdb_res import pdblist_to_uniprot
     res_map = pdblist_to_uniprot(pdblist)
+    sup_map = {} ## supplimentary residue map from the input list
+    with open(filename.replace('.fea',''), 'r') as tempfile:
+        for line in tempfile:
+            ele = line.split('\t')
+            p1 = ele[0]
+            p2 = ele[1]
+            s1 = ele[3]
+            s2 = ele[5]
+            if len(s1) > 1:
+                sup_map[s1] = p1
+            if len(s2) > 1:
+                sup_map[s2] = p2
     comb = {}
     for pp, res, vals in data:
-        res = res_map.get(res, res) ## map residues
+        if res in res_map:
+            res = res_map[res]
+        elif res in sup_map:
+            pdb, ch, pos = res.split(':')
+            res = sup_map+':'+pos
         if (pp,res) in comb:
             maxv = []
             for i,j in zip(comb[(pp,res)], vals):
