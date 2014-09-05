@@ -275,7 +275,7 @@ def map_pdb_residue(filename, listname, useidx=1):
     output.sort()
     return output
 
-def combine_pdb_residue(filename, listname=None outname=None):
+def combine_pdb_residue(filename, listname=None, outname=None):
     ''' Combine the features vectors from prepare_feature functions
         by taking the maximum values for PDB residues mapped to the same
         resiude in a protein pair.
