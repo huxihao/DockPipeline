@@ -464,7 +464,7 @@ def main(para):
     if 'ThreadNum' not in para:
         para['ThreadNum'] = '1'
     if 'FeatureType' not in para:
-        para['FeatureType'] = 'SaveZDOCK'
+        para['FeatureType'] = 'SaveResidue'
     if 'ModelName' not in para:
         para['ModelName'] = 'RF-bin'
     train_list = [] ## unique pdb list for training
