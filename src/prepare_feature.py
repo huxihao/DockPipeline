@@ -367,6 +367,7 @@ def main(para):
            'SaveFinal': save_final,
            }
     if para['FeatureType'] not in fun:
+        print 'Try to use', para['FeatureType']
         raise ValueError('FeatureType must be within %s'%fun.keys())
 
     ## Generate task list
