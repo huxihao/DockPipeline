@@ -16,7 +16,7 @@ import os,sys,time,string
 ## Global Log File Name
 DEFINE_LOG_FILE = "log.txt"
 
-def show(info="\n", END=False):
+def show(info="\n", END=True):
     ''' Output information to be in a table-like form.
         Both print on screen and save into the file of DEFINE_LOG_FILE.
     '''
@@ -30,13 +30,13 @@ def show(info="\n", END=False):
         print "%.3f"%info,
     elif isinstance(info, list) or isinstance(info, set) or isinstance(info, tuple):
         for e in info:
-            show(e)
+            show(e, False)
     elif out.endswith("\n"):
         outfile.write(out)
         print out[:min(len(out)-1,78)]
     else:
         outfile.write(str(out)+"\t")
-        print string.ljust(out[:min(len(out),25)],25),
+        print out,#string.ljust(out[:min(len(out),25)],25),
     if END:
         print ''
         outfile.write("\n")
@@ -67,12 +67,12 @@ def main_fun(main):
     main(para)
     END_TIME = time.time()
     for name in para:
-        show("# Parameter: " + name + " =\t" + para[name] + "\n")
-    show(time.strftime("# Begin  at: %Y/%m/%d %H:%M:%S\n",\
+        show("# Parameter: " + name + " =\t" + para[name])
+    show(time.strftime("# Begin  at: %Y/%m/%d %H:%M:%S",\
          time.gmtime(START_TIME)))
-    show(time.strftime("# Finish at: %Y/%m/%d %H:%M:%S\n",\
+    show(time.strftime("# Finish at: %Y/%m/%d %H:%M:%S",\
          time.gmtime(END_TIME)))
-    show(time.strftime("# Total Time: %d-th day %H:%M:%S\n",\
+    show(time.strftime("# Total Time: %d-th day %H:%M:%S",\
          time.gmtime(END_TIME-START_TIME))) 
 
 
@@ -297,8 +297,7 @@ def performance(real, pred, x='FPR', y='TPR', eps=1e-50, trim=8):
     return round(curve_area,trim), curve_x, curve_y, curve_c
 
 def main(para):
-    show(num2str(str2num('Hello World!\n')))
+    show(num2str(str2num('Hello World!')))
     show(histogram([1,3,2,1,2,10,-2], [1,2,3]))
-    show()
 
 if __name__ == "__main__": main_fun(main)

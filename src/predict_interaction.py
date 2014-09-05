@@ -44,7 +44,7 @@ def main(para):
     if 'SolutionNum' not in para:
         para['SolutionNum'] = '10'
     if 'PredictCutoff' not in para:
-        para['PredictCutoff'] = '0.216'
+        para['PredictCutoff'] = '0.5'
 
     ## Step 1: Train a model
     if 'ModelName' in para and not os.path.exists(para['ModelFile']):
@@ -87,14 +87,17 @@ def main(para):
     pp_val = group_residue(idx, val2) ## using predicted value
 
     listfile = open(para['NewList'], 'r')
+    outfile = open('PredictedInterfaceResidues.txt', 'w')
+    cc1 = 0; cc2 = 0
     for line in listfile:
         ele = line.split()
         p1 = ele[0]; p2 = ele[1]
         s1 = ele[2]; s2 = ele[3]
         if (p1,p2) not in pp_val:
-            #show('Docking\tFailed\n')
+            cc2 += 1
             continue
-        show([p1,p2,s1,s2])
+        outfile.write('\t'.join([p1,p2,s1,s2]))
+        cc1 += 1
         res = pp_val[(p1,p2)]
         int1 = [r for r in res if (r.split(':')[0]==p1 or r.split(':')[0]==s1)
                                   and res[r] >= float(para['PredictCutoff'])]
@@ -102,9 +105,10 @@ def main(para):
                                   and res[r] >= float(para['PredictCutoff'])]
         ord1 = sorted([int(r.split(':')[-1]) for r in int1])
         ord2 = sorted([int(r.split(':')[-1]) for r in int2])
-        show(','.join([str(i) for i in ord1]))
-        show(','.join([str(i) for i in ord2]))
-        show()
+        outfile.write('\t'+','.join([str(i) for i in ord1]))
+        outfile.write('\t'+','.join([str(i) for i in ord2])+'\n')
     listfile.close()
+    outfile.close()
+    show(['Saved',cc1,'Failed',cc2])
 
 if __name__ == "__main__": main_fun(main)

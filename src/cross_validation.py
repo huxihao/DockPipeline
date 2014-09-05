@@ -216,11 +216,7 @@ def split_data(datafile, fold, seed=2014):
                         testfile.write('\t'.join(data[j]))
                         save2 += 1
                 bancc2 += int(save2==0)
-        show('Remove')
-        show(bancc1)
-        show('protein pairs in train and')
-        show(bancc2)
-        show('protein pairs in test', True)
+        show(['Remove', bancc1, 'protein pairs in train and', bancc2, 'protein pairs in test'])
         trainfile.close()
         testfile.close()
         yield train_name, test_name
@@ -420,9 +416,7 @@ def get_res_labels(para):
         for line in infile:
             p1,p2 = line.split('\t')[:2]
             pairs.add((p1,p2))
-    show('Target to predict interface residues among')
-    show(len(pairs))
-    show('protein pairs with')
+    show(['Target to predict interface residues among', len(pairs), 'protein pairs with'])
     pro_len = {}
     with open(para['DataPath']+'/Uniprot_longest_052914.txt', 'r') as tempfile:
         for line in tempfile:
@@ -449,8 +443,7 @@ def get_res_labels(para):
             for i in xrange(1,pro_len[p2]+1):
                 res = p2+':'+str(i)
                 real_value.append((p1+'='+p2, res, int(res in intres)))
-    show(len(real_value))
-    show('labelled residues', True)
+    show([len(real_value), 'labelled residues'])
     return real_value, pp_int
 
 def main(para):
@@ -498,7 +491,7 @@ def main(para):
             test_ddi = reduced_ddi(test + '.ddi')
         ###############################################################
         ## Train
-        show(train)
+        show(train, False)
         para2 = para.copy() ## copy parameters
         para2['ListFile'] = train
         para2['ListSize'] = '-1'
@@ -507,18 +500,18 @@ def main(para):
         prepare_feature.main(para2)
         resfile = combine_pdb_residue(para2['OutFile'])
         #resfile = add_more_info(resfile, train_ddi)
-        show(add_residue_label(resfile, pp_int))
+        show(add_residue_label(resfile, pp_int), False)
         mfile = train_model(resfile, model=para['ModelName'])
 
         ###############################################################
         ## Test
-        show(test)
+        show(test, False)
         para2['ListFile'] = test
         para2['OutFile'] = test + '.fea'
         prepare_feature.main(para2)
         resfile = combine_pdb_residue(para2['OutFile'])
         #resfile = add_more_info(resfile, train_ddi)
-        show(add_residue_label(resfile, None))
+        show(add_residue_label(resfile, None), False)
         outfile = model_predict(resfile, model=para['ModelName'], mfile=mfile)
 
         ## Save values
@@ -536,7 +529,7 @@ def main(para):
             os.system('rm %s*'%test)
     ## Get the real labels of residues in predicted protein pairs
     pred_pp = set([pp for pp, res, val in pred_value])
-    show('Performance based on %s protein pairs\n'%len(pred_pp))
+    show('Performance based on %s protein pairs'%len(pred_pp))
     for pp, res, val in all_res:
         if pp in pred_pp:
             real_value.append((pp, res, val))
@@ -556,13 +549,13 @@ def main(para):
             for _a, _b, _c in zip(head, real, pred):
                 tempfile.write('%s\t%s\t%s\n'%('\t'.join(_a), _b, _c))
         ## evaluate
-        show(name)
+        show(name, False)
         area, px, py, pc = performance(real, pred, x='FPR', y='TPR')
-        show(area)
+        show(area, False)
         #show(); show('FPR'); show(px, True); 
         #show('TPR'); show(py, True);
         area, px, py, pc = performance(real, pred, x='TPR', y='PPV')
-        show(area)
+        show(area, False)
         #show(); show('Recall'); show(px, True); 
         #show('Precision'); show(py, True);
         #show('Cutoff'); show(pc, True);
