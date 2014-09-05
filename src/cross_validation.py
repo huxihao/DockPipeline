@@ -253,7 +253,7 @@ def map_pdb_residue(filename, listname, useidx=1):
             p,s,c = line.split('\t')
             sup_map[(s,c.strip())] = p
     comb = {}
-    for pp, res, vals in data:
+    for pp, res, val in data:
         if res in res_map:
             res = res_map[res]
         if res.count(':') == 2:
