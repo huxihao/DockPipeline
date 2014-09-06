@@ -304,8 +304,8 @@ def save_final(info, pdb1, ch1, pdb2, ch2, sol_num=5, dock_pool='.'):
     if f1 == [] or f2 == [] or f3 == []:
         dock.clean_temp_path()
         return []
+    dock.prepare_data(pdb1, ch1, pdb2, ch2)
     if not os.path.exists('zdock_pool/'+dock.solution.split('/')[-1]):
-        dock.prepare_data(pdb1, ch1, pdb2, ch2)
         sfiles = dock.generate_complex(sol_num)
         from shutil import copy
         copy(dock.solution, 'zdock_pool/'+dock.solution.split('/')[-1])
