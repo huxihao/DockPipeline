@@ -301,10 +301,11 @@ def save_final(info, pdb1, ch1, pdb2, ch2, sol_num=5, dock_pool='.'):
     f1 = feature_rcf(info, area_file, rcf_file)
     f2 = feature_area(info, area_file, sol_num)
     f3 = feature_residue(info, area_file)
-    if f1 == [] or f2 == [] or f3 == []: return []
-    else: output = [a1+a2[1:]+a3[1:] for a1,a2,a3 in zip(f1,f2,f3)]
-    dock.prepare_data(pdb1, ch1, pdb2, ch2)
-    if True: ## save them
+    if f1 == [] or f2 == [] or f3 == []:
+        output = []
+    else: 
+        output = [a1+a2[1:]+a3[1:] for a1,a2,a3 in zip(f1,f2,f3)]
+        dock.prepare_data(pdb1, ch1, pdb2, ch2)
         sfiles = dock.generate_complex(sol_num)
         from shutil import copy
         copy(dock.solution, 'zdock_pool/'+dock.solution.split('/')[-1])
