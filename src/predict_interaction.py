@@ -40,7 +40,7 @@ def main(para):
     if 'ModelFile' not in para:
         para['ModelFile'] = para['ListFile']+'.fea.max.'+para['ModelName']
     if 'FeatureType' not in para:
-        para['FeatureType'] = 'SaveFinal'
+        para['FeatureType'] = 'SaveResidue'
     if 'SolutionNum' not in para:
         para['SolutionNum'] = '10'
     if 'PredictCutoff' not in para:
