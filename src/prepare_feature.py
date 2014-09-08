@@ -296,7 +296,7 @@ def save_all_features(info, pdb1, ch1, pdb2, ch2, sol_num=5, dock_pool='.'):
 def save_final(info, pdb1, ch1, pdb2, ch2, sol_num=5, dock_pool='.'):
     from use_dock import UseZDOCK
     dock = UseZDOCK(pool_path=dock_pool)
-    area_file = dock_area(dock, info, pdb1, ch1, pdb2, ch2, sol_num, skip=True)[0][0]
+    area_file = dock_area(dock, info, pdb1, ch1, pdb2, ch2, sol_num, skip=False)[0][0]
     rcf_file = zdock_rcf(info, pdb1, ch1, pdb2, ch2, sol_num, dock_pool)[0][0]
     f1 = feature_rcf(info, area_file, rcf_file)
     f2 = feature_area(info, area_file, sol_num)
