@@ -87,7 +87,7 @@ def main(para):
     pp_val = group_residue(idx, val2) ## using predicted value
 
     listfile = open(para['NewList'], 'r')
-    outfile = open('PredictedInterfaceResidues.txt', 'w')
+    outfile = open('PredictedInterfaceResidues_Cutoff%s.txt'%para['PredictCutoff'], 'w')
     cc1 = 0; cc2 = 0
     for line in listfile:
         ele = line.split()
