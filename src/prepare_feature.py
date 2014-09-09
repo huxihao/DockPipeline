@@ -313,7 +313,7 @@ def save_final(info, pdb1, ch1, pdb2, ch2, sol_num=5, dock_pool='.'):
         copy(rcf_file, 'zdock_pool/'+rcf_file.split('/')[-1])
         for i in xrange(sol_num):
             copy(sfiles[i], 'zdock_pdbs/%s-%s-%s-%s-ZDOCK-%d.pdb'%(pdb1,ch1,pdb2,ch2,i+1))
-            break ## save only one for now
+#            break ## save only one for now
     dock.clean_temp_path()
     return [a1+a2[1:]+a3[1:] for a1,a2,a3 in zip(f1,f2,f3)]
 
