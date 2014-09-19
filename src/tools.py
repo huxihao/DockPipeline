@@ -58,8 +58,8 @@ def main_fun(main):
     global DEFINE_LOG_FILE
     DEFINE_LOG_FILE = os.path.abspath(para["LogFile"])
     if "SrcPath" not in para: para["SrcPath"] = os.path.dirname(os.path.realpath(__file__))
-    if "DataPath" not in para: para["DataPath"] = para["SrcPath"]+"../data/"
-    if "BinPath" not in para: para["BinPath"] = para["SrcPath"]+"../bin/"
+    if "DataPath" not in para: para["DataPath"] = para["SrcPath"]+"/../data"
+    if "BinPath" not in para: para["BinPath"] = para["SrcPath"]+"/../bin"
     ## Delete old log file
     if os.path.exists(DEFINE_LOG_FILE):
         os.remove(DEFINE_LOG_FILE)
