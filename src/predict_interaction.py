@@ -39,7 +39,7 @@ def main(para):
         with open(para['NewList'], 'w') as tempfile:
             tempfile.write('Hhp1\tTas3\t4HOK\tA\t3D1D\tA\n')
             #tempfile.write('Hhp1\tMoc3\t4HOK\tA\tMOC3_modbase\t \n')
-            tempfile.write('Hhp1\tPpc89\t4HOK\tA\tPPC89_Modbase\t \n')
+            #tempfile.write('Hhp1\tPpc89\t4HOK\tA\tPPC89_Modbase\t \n')
 
     ## docking them and generate features
     import prepare_feature
