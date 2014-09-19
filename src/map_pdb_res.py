@@ -1,6 +1,8 @@
 from tools import *
 import os, gzip, urllib
 
+DEFINE_SIFTS_PATH = os.path.dirname(os.path.realpath(__file__)) + '/../data/SIFTS'
+
 def download_map(pdb):
     print 'Downloading the residue map for', pdb
     header = '{http://www.ebi.ac.uk/pdbe/docs/sifts/eFamily.xsd}'
@@ -34,7 +36,7 @@ def download_map(pdb):
         yield [pdb,chainid,pdbresnum,pdbresname,chainuniprot,unpresnum,unpresname]
 
 PDB_RES_MAP = {}
-def parse_maps(pdblist, mapfile='../data/pdbresiduemapping.txt.gz'):
+def parse_maps(pdblist, mapfile=DEFINE_SIFTS_PATH+'/../pdbresiduemapping.txt.gz'):
     global PDB_RES_MAP
     if len(PDB_RES_MAP) == 0:
         if not os.path.exists(mapfile):
@@ -78,7 +80,7 @@ def parse_maps(pdblist, mapfile='../data/pdbresiduemapping.txt.gz'):
         for j1, j2 in zip(l1, l2):
             yield [pdb, ch, str(j1), '', p, str(j2), '']
 
-def process_map(pdb, data_path='../data/SIFTS', download=True):
+def process_map(pdb, data_path=DEFINE_SIFTS_PATH, download=True):
     if len(pdb) == 4:
         pdb = pdb.upper()
     num = 0
