@@ -82,7 +82,7 @@ def change_of_rel_asa(pdb, ch1='', ch2='', dock=None, file1=None, file2=None):
     if dock == None:
         from use_dock import DockTool
         dock = DockTool()
-        ch1, ch2 = dock.prepare_data(pdb, ch1, pdb, ch2, file1=file1, file2=file2)
+        p1, ch1, p2, ch2 = dock.prepare_data(pdb, ch1, pdb, ch2, file1=file1, file2=file2)
     area1 = get_area(dock.chain1, dock.chain1_id, ch1)
     area2 = get_area(dock.chain2, dock.chain2_id, ch2)
     areac = get_area(dock.combine, dock.chain1_id+dock.chain2_id, ch1+ch2)
@@ -99,7 +99,7 @@ def two_pdb_chains(pdb, ch1='', ch2='', dock=None, file1=None, file2=None,
     if dock == None:
         from use_dock import DockTool
         dock = DockTool()
-        ch1, ch2 = dock.prepare_data(pdb, ch1, pdb, ch2, file1=file1, file2=file2)
+        p1, ch1, p2, ch2 = dock.prepare_data(pdb, ch1, pdb, ch2, file1=file1, file2=file2)
     area1 = get_area(dock.chain1, dock.chain1_id, ch1)
     area2 = get_area(dock.chain2, dock.chain2_id, ch2)
     areac = get_area(dock.combine, dock.chain1_id+dock.chain2_id, ch1+ch2)
