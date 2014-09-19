@@ -3,29 +3,6 @@ from multiprocessing import Pool ## required by each file
 from functools import partial
 import random
 
-def format_chains(id, pdb1='../data/modbase/mlh1.pdb', ch1=' ', pdb2='../data/modbase/pms1.pdb', ch2=' '):
-    if os.path.exists('%s.pdb'%id):
-        return str(id), 'A', 'B'
-    warnings.filterwarnings("ignore")
-    from Bio.PDB import PDBParser
-    par = PDBParser()
-    pdb1file = open(pdb1, 'r')
-    pdb2file = open(pdb2, 'r')
-    import gzip
-    if pdb1.endswith('.gz'):
-        pdb1file = gzip.open(pdb1, 'rb')
-    if pdb2.endswith('.gz'):
-        pdb2file = gzip.open(pdb2, 'rb')
-    s1 = par.get_structure('pdb1', pdb1file)
-    s2 = par.get_structure('pdb2', pdb2file)
-    from use_dock import save_chain, combine_chains
-    save_chain('chain1.pdb', s1, ch1, 'A')
-    save_chain('chain2.pdb', s2, ch2, 'B')
-    combine_chains(['chain1.pdb', 'chain2.pdb'], '%s.pdb'%id)
-    os.remove('chain1.pdb')
-    os.remove('chain2.pdb')
-    return str(id), 'A', 'B'
-
 def main(para):
     if 'ListSize' not in para:
         para['ListSize'] = '5'
@@ -34,7 +11,7 @@ def main(para):
     if 'RandomSeed' not in para:
         para['RandomSeed'] = '2014'
     if 'ListFile' not in para:
-        para['ListFile'] = 'set_list.txt'
+        para['ListFile'] = 'train_list.txt'
     if 'ModelName' not in para:
         para['ModelName'] = 'RF-bin'
     if 'ModelFile' not in para:
