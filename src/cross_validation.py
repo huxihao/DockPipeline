@@ -454,7 +454,7 @@ def get_res_labels(para):
 
 def main(para):
     if 'ListFile' not in para:
-        para['ListFile'] = 'set_list.txt' 
+        para['ListFile'] = para['DataPath']+'/set1_all_new.txt' 
     if 'SplitFold' not in para:
         para['SplitFold'] = '10'
     if 'SolutionNum' not in para:
