@@ -293,7 +293,7 @@ def save_all_features(info, pdb1, ch1, pdb2, ch2, sol_num=5, dock_pool='.'):
     if f1 == [] or f2 == [] or f3 == []: return []
     return [a1+a2[1:]+a3[1:] for a1,a2,a3 in zip(f1,f2,f3)]
 
-def save_final(info, pdb1, ch1, pdb2, ch2, sol_num=5, dock_pool='.'):
+def save_all_files(info, pdb1, ch1, pdb2, ch2, sol_num=5, dock_pool='.'):
     from use_dock import UseZDOCK
     dock = UseZDOCK(pool_path=dock_pool)
     area_file = dock_area(dock, info, pdb1, ch1, pdb2, ch2, sol_num, skip=False)[0][0]
@@ -366,7 +366,7 @@ def main(para):
            'SaveRCF': save_zdock_rcf,
            'SavePatchDock': save_patchdock,
            'SaveResidue': save_all_features,
-           'SaveFinal': save_final,
+           'SaveResidueFiles': save_all_files,
            }
     if para['FeatureType'] not in fun:
         print 'Try to use', para['FeatureType']
