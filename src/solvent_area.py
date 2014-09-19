@@ -4,7 +4,7 @@ import subprocess
 from Bio.PDB import *
 import Bio.PDB.NACCESS as nac
 
-DEFINE_NACCESS_PATH = '../bin/naccess2.1.1/naccess'
+DEFINE_NACCESS_PATH = os.path.dirname(os.path.realpath(__file__))+'/../bin/naccess2.1.1/naccess'
 
 def get_area(pdbfile, chainids=None, newids=None, naccess=None):
     if naccess == None:
