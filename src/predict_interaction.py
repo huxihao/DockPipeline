@@ -11,7 +11,7 @@ def main(para):
     if 'RandomSeed' not in para:
         para['RandomSeed'] = '2014'
     if 'ListFile' not in para:
-        para['ListFile'] = 'train_list.txt'
+        para['ListFile'] = para['DataPath']+'/set_all_new.txt'
     if 'ModelName' not in para:
         para['ModelName'] = 'RF-bin'
     if 'ModelFile' not in para:
