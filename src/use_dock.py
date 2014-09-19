@@ -20,6 +20,10 @@ def get_pdb_file(pdbid, pdbfile=None, pdbpath=None, savepath=None):
     if os.path.exists(pdbfile):
         return pdbfile
     locations.append(pdbfile)
+    if os.path.exists(pdbfile+'.gz'): ## compressed file
+        import gzip
+        return gzip.open(pdbfile+'.gz', 'rb')
+    locations.append(pdbfile+'.gz')
     ## try the file in the data path
     pdbfile = '%s/%s.pdb'%(pdbpath, pdbid)
     if os.path.exists(pdbfile):
@@ -44,10 +48,10 @@ def get_pdb_file(pdbid, pdbfile=None, pdbpath=None, savepath=None):
     if savepath != None:
         os.system('wget http://www.rcsb.org/pdb/files/%s.pdb.gz'%pdbid.upper())
         pdbsavepath = '%s/%s'%(savepath, pdbid[1:3].lower())
-        if not os.path.exists(pdbsavepath):
-            os.makedirs(pdbsavepath)
-        os.system('mv %s.pdb.gz %s/pdb%s.ent.gz'%
-                  (pdbid.upper(), pdbsavepath, pdbid.lower()))
+        try:
+            os.system('mv %s.pdb.gz %s/pdb%s.ent.gz'%(pdbid.upper(), pdbsavepath, pdbid.lower()))
+        except:
+            pass ## stay in the current folder
     else:
         raise IOError('Fail to find %s at:\n%s\n'%(pdbid,'\n'.join(locations)))
     return get_pdb_file(pdbid, pdbfile, savepath, savepath=None)
