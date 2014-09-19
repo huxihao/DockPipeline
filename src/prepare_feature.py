@@ -366,7 +366,7 @@ def main(para):
            'SaveRCF': save_zdock_rcf,
            'SavePatchDock': save_patchdock,
            'SaveResidue': save_all_features,
-           'SaveResidueFiles': save_all_files,
+           'SaveResidueFile': save_all_files,
            }
     if para['FeatureType'] not in fun:
         print 'Try to use', para['FeatureType']
