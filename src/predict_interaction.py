@@ -72,7 +72,6 @@ def main(para):
             cc2 += 1
             continue
         outfile.write(line[:-1]+'\t')
-        outfile.write('%s--%s--ZDOCK-'%(s1,s2))
         cc1 += 1
         res = pp_val[(p1,p2)]
         int1 = [r for r in res if r.split(':')[0]==p1 and res[r] >= float(para['PredictCutoff'])]
