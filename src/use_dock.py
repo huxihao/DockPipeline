@@ -3,11 +3,12 @@ from Bio.PDB import *
 import re
 import warnings
 
-DEFINE_PDB_PATH = '../data/pdb'
-DEFINE_MOD_PATH = '../data/single_structures'
-DEFINE_ZDOCK_PATH = '../bin/zdock3.0.2_linux_x64'
-DEFINE_PATCHDOCK_PATH = '../bin/PatchDock'
-DEFINE_GRAMM_PATH = '../bin/gramm'
+GET_SRC_PATH = os.path.dirname(os.path.realpath(__file__))
+DEFINE_PDB_PATH = GET_SRC_PATH+'/../data/pdb'
+DEFINE_MOD_PATH = GET_SRC_PATH+'/../data/single_structures'
+DEFINE_ZDOCK_PATH = GET_SRC_PATH+'/../bin/zdock3.0.2_linux_x64'
+DEFINE_PATCHDOCK_PATH = GET_SRC_PATH+'/../bin/PatchDock'
+DEFINE_GRAMM_PATH = GET_SRC_PATH+'/../bin/gramm'
 
 def get_pdb_file(pdbid, pdbfile=None, pdbpath=None, savepath=None):
     locations = []
