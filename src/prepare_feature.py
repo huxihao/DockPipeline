@@ -102,9 +102,10 @@ def dock_area(dock, info, pdb1, ch1, pdb2, ch2, sol_num=5, skip=False):
     outfilename = dock.POOL_PATH + outfilename.replace(' ', '-')
     if os.path.exists(outfilename): ## compressed by gzip
         line_num = -3 ## without headers
-        with gzip.open(outfilename, 'rb') as tmpfile:
-            for l in tmpfile:
-                line_num += 1
+        tmpfile = gzip.open(outfilename, 'rb')
+        for l in tmpfile:
+            line_num += 1
+        tmpfile.close()
         if line_num >= 0:
             print dock.TOOL, 'Precomputed\t', info, pdb1, ch1, pdb2, ch2, '\t', line_num
             if line_num < 2: show('May need to delete %s\n'%outfilename)
@@ -305,7 +306,11 @@ def save_all_files(info, pdb1, ch1, pdb2, ch2, sol_num=5, dock_pool='.'):
         dock.clean_temp_path()
         return []
     dock.prepare_data(pdb1, ch1, pdb2, ch2)
-    if not os.path.exists('zdock_pool/'+dock.solution.split('/')[-1]):
+    if not os.path.exists('zdock_pool'):
+        os.mkdir('zdock_pool')
+    if not os.path.exists('zdock_pdbs'):
+        os.mkdir('zdock_pdbs')
+    if not os.path.exists('zdock_pool/'+dock.solution.split('/')[-1]): ## check one
         sfiles = dock.generate_complex(sol_num)
         from shutil import copy
         copy(dock.solution, 'zdock_pool/'+dock.solution.split('/')[-1])

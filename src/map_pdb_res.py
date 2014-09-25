@@ -44,12 +44,13 @@ def parse_maps(pdblist, mapfile=DEFINE_SIFTS_PATH+'/../pdbresiduemapping.txt.gz'
             return
         if mapfile.endswith('.gz'):
             import gzip
-            with gzip.open(mapfile, 'rb') as tfile:
-                for line in tfile:
-                    ele = line.strip().split()
-                    maps = PDB_RES_MAP.get(ele[0].upper(), [])
-                    maps.append(ele)
-                    PDB_RES_MAP[ele[0].upper()] = maps
+            tfile = gzip.open(mapfile, 'rb')
+            for line in tfile:
+                ele = line.strip().split()
+                maps = PDB_RES_MAP.get(ele[0].upper(), [])
+                maps.append(ele)
+                PDB_RES_MAP[ele[0].upper()] = maps
+            tfile.close()
         else: ## assuming .txt
             with open(mapfile, 'r') as tfile:
                 for line in tfile:
