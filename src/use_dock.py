@@ -14,9 +14,12 @@ def get_pdb_file(pdbid, pdbfile=None, pdbpath=None, savepath=None):
     locations = []
     if pdbpath == None:
         pdbpath = os.path.abspath(DEFINE_PDB_PATH)
-    if pdbfile == None:
-        ## try the current path
-        pdbfile = '%s.pdb'%pdbid
+    if pdbfile != None:
+        if os.path.exists(pdbfile):
+            return pdbfile
+        locations.append(pdbfile)
+    ## try the current path
+    pdbfile = '%s.pdb'%pdbid
     if os.path.exists(pdbfile):
         return pdbfile
     locations.append(pdbfile)
