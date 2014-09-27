@@ -3,17 +3,23 @@ from Bio.PDB import *
 import re
 import warnings
 
-GET_SRC_PATH = os.path.dirname(os.path.realpath(__file__))
-DEFINE_PDB_PATH = GET_SRC_PATH+'/../data/pdb'
-DEFINE_MOD_PATH = GET_SRC_PATH+'/../data/single_structures'
-DEFINE_ZDOCK_PATH = GET_SRC_PATH+'/../bin/zdock3.0.2_linux_x64'
-DEFINE_PATCHDOCK_PATH = GET_SRC_PATH+'/../bin/PatchDock'
-DEFINE_GRAMM_PATH = GET_SRC_PATH+'/../bin/gramm'
+if 'DOCK_SRC_PATH' not in os.environ:
+    os.environ['DOCK_SRC_PATH'] = os.path.dirname(os.path.realpath(__file__))
+if 'DOCK_PDB_PATH' not in os.environ:
+    os.environ['DOCK_PDB_PATH'] = os.environ['DOCK_SRC_PATH']+'/../data/pdb'
+if 'DOCK_MOD_PATH' not in os.environ:
+    os.environ['DOCK_MOD_PATH'] = os.environ['DOCK_SRC_PATH']+'/../data/single_structures'
+if 'DOCK_ZDOCK_PATH' not in os.environ:
+    os.environ['DOCK_ZDOCK_PATH'] = os.environ['DOCK_SRC_PATH']+'/../bin/zdock3.0.2_linux_x64'
+if 'DOCK_PATCHDOCK_PATH' not in os.environ:
+    os.environ['DOCK_PATCHDOCK_PATH'] = os.environ['DOCK_SRC_PATH']+'/../bin/PatchDock'
+if 'DOCK_GRAMM_PATH' not in os.environ:
+    os.environ['DOCK_GRAMM_PATH'] = os.environ['DOCK_SRC_PATH']+'/../bin/gramm'
 
 def get_pdb_file(pdbid, pdbfile=None, pdbpath=None, savepath=None):
     locations = []
     if pdbpath == None:
-        pdbpath = os.path.abspath(DEFINE_PDB_PATH)
+        pdbpath = os.path.abspath(os.environ['DOCK_PDB_PATH'])
     if pdbfile != None:
         if os.path.exists(pdbfile):
             return pdbfile
@@ -35,7 +41,7 @@ def get_pdb_file(pdbid, pdbfile=None, pdbpath=None, savepath=None):
     locations.append(pdbfile)
     ## try the default path format in PDB
     pdbfile = pdbpath + '/%s/pdb%s.ent'%(pdbid[1:3].lower(), pdbid.lower())
-    if os.path.exists(pdbfile)
+    if os.path.exists(pdbfile):
         return pdbfile
     locations.append(pdbfile)
     ## try the compressed one
@@ -79,9 +85,9 @@ class DockTool(object):
         return self.TOOL
 
     def read_pdb(self, pdbid, thefile=None, download=True):
-        pdb_path = os.path.abspath(DEFINE_PDB_PATH)
+        pdb_path = os.path.abspath(os.environ['DOCK_PDB_PATH'])
         if len(pdbid) != 4:
-            pdb_path = os.path.abspath(DEFINE_MOD_PATH)
+            pdb_path = os.path.abspath(os.environ['DOCK_MOD_PATH'])
             download = False
         warnings.filterwarnings("ignore")
         if download:
@@ -91,7 +97,14 @@ class DockTool(object):
         par = PDBParser()
         try:
             if pdbfile.endswith('.gz'):
-                infile = gzip.open(pdbfile, 'rb')
+                try:
+                    import gzip
+                    infile = gzip.open(pdbfile, 'rb')
+                except IOError:
+                    print 'Need to update', pdbfile
+                    os.remove(pdbfile)
+                    pdbfile = get_pdb_file(pdbid, thefile, pdb_path, pdb_path)
+                    infile = gzip.open(pdbfile, 'rb')
             else:
                 infile = pdbfile
             return par.get_structure(pdbid, infile)
@@ -244,7 +257,7 @@ class UseZDOCK(DockTool):
         self.TOOL = 'ZDOCK'
         self.OLD_PATH = os.path.abspath('.')
         if tool_path == None:
-            self.TOOL_PATH = os.path.abspath(DEFINE_ZDOCK_PATH)
+            self.TOOL_PATH = os.path.abspath(os.environ['DOCK_ZDOCK_PATH'])
         else:
             self.TOOL_PATH = os.path.abspath(tool_path)
         if not os.path.exists(self.TOOL_PATH):
@@ -311,7 +324,7 @@ class UsePatchDock(DockTool):
         self.TOOL = 'PatchDock'
         self.OLD_PATH = os.path.abspath('.')
         if tool_path == None:
-            self.TOOL_PATH = os.path.abspath(DEFINE_PATCHDOCK_PATH)
+            self.TOOL_PATH = os.path.abspath(os.environ['DOCK_PATCHDOCK_PATH'])
         else:
             self.TOOL_PATH = os.path.abspath(tool_path)
         if not os.path.exists(self.TOOL_PATH):
@@ -373,7 +386,7 @@ class UseGRAMM(DockTool):
         self.TOOL = 'GRAMM'
         self.OLD_PATH = os.path.abspath('.')
         if tool_path == None:
-            self.TOOL_PATH = os.path.abspath(DEFINE_GRAMM_PATH)
+            self.TOOL_PATH = os.path.abspath(os.environ['DOCK_GRAMM_PATH'])
         else:
             self.TOOL_PATH = os.path.abspath(tool_path)
         if not os.path.exists(self.TOOL_PATH):

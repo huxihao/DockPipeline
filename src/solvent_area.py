@@ -4,11 +4,14 @@ import subprocess
 from Bio.PDB import *
 import Bio.PDB.NACCESS as nac
 
-DEFINE_NACCESS_PATH = os.path.dirname(os.path.realpath(__file__))+'/../bin/naccess2.1.1/naccess'
+if 'DOCK_SRC_PATH' not in os.environ:
+    os.environ['DOCK_SRC_PATH'] = os.path.dirname(os.path.realpath(__file__))
+if 'DOCK_NACCESS_PATH' not in os.environ:
+    os.environ['DOCK_NACCESS_PATH'] = os.environ['DOCK_SRC_PATH']+'/../bin/naccess2.1.1/naccess'
 
 def get_area(pdbfile, chainids=None, newids=None, naccess=None):
     if naccess == None:
-        naccess = os.path.abspath(DEFINE_NACCESS_PATH)
+        naccess = os.path.abspath(os.environ['DOCK_NACCESS_PATH'])
     '''
     NACCESS BioPython Interface:
  84              naccess_rel_dict[(chain_id, res_id)] = { 
