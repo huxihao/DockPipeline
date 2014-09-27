@@ -24,7 +24,7 @@ def zdock_clean(info, pdb1, ch1, pdb2, ch2, sol_num=5, pool='.'):
             os.remove(dock.solution)
             print 'Delete', dock.solution
         dock.clean_temp_path()
-        show('The clean function has deleted %s\n'%infilename)
+        show('The clean function has deleted %s'%infilename)
         return [[infilename, 'Deleted', linenum]]
     else:
         return []
@@ -91,7 +91,7 @@ def patchdock_clean(info, pdb1, ch1, pdb2, ch2, sol_num=5, pool='.'):
             os.remove(dock.solution)
             print 'Delete', dock.solution
         dock.clean_temp_path()
-        show('The clean function has deleted %s\n'%infilename)
+        show('The clean function has deleted %s'%infilename)
         return [[infilename, 'Deleted', linenum]]
     else:
         return []
@@ -108,7 +108,7 @@ def dock_area(dock, info, pdb1, ch1, pdb2, ch2, sol_num=5, skip=False):
         tmpfile.close()
         if line_num >= 0:
             print dock.TOOL, 'Precomputed\t', info, pdb1, ch1, pdb2, ch2, '\t', line_num
-            if line_num < 2: show('May need to delete %s\n'%outfilename)
+            if line_num < 2: show('May need to delete %s'%outfilename)
             return [[outfilename, line_num]]
     elif skip:
         return [[outfilename, sol_num]]
@@ -154,11 +154,11 @@ def dock_area(dock, info, pdb1, ch1, pdb2, ch2, sol_num=5, skip=False):
         outfile.write(outline) ## write all at once
         outfile.close()
     except Exception, v: ## any error will lead to fail
-        show('Failed due to %s in:\n'%v)
+        show('Failed due to %s in:'%v)
         cc = 0 ## reset
     finally:
         dock.clean_temp_path()
-    show(dock.TOOL); show([info,pdb1,ch1,pdb2,ch2]); show(cc); show()
+    show([dock.TOOL, info, pdb1, ch1, pdb2, ch2, cc])
     return [[outfilename, cc]]
 
 def feature_area(info, infilename, sol_num=100):
@@ -265,7 +265,7 @@ def feature_rcf(info, infilename, scorefile):
             entry = ['%s,%s'%(info, pos), rcf_score[pos]]
             data_set.append(entry)
     except:
-        show('Something wrong in %s\n'%scorefile)
+        show('Something wrong in %s'%scorefile)
         return []
     return data_set
 
