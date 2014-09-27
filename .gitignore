@@ -5,5 +5,5 @@ data/*
 !data/500_HBHQ_Docking_Candidates.txt
 !data/rest_HBHQ_Docking_Candidates.txt
 !data/set1_all_new.txt
-!work/set_list.txt.fea.max.RF-bin
+!data/set1_all_new.txt.fea.max.RF-bin
 result/*
