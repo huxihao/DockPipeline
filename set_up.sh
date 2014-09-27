@@ -7,10 +7,10 @@ export DOCK_PDB_PATH=/home/local/CORNELL/resources/pdb/data
 export DOCK_MOD_PATH=/home/local/CORNELL/resources/instruct_data/models/dockml/single_structures
 
 ## Set EXE Path
-DOCK_NACCESS_PATH=$DOCK_PATH/bin/naccess2.1.1/naccess
-DOCK_ZDOCK_PATH=$DOCK_PATH/bin/zdock3.0.2_linux_x64
-DOCK_PATCHDOCK_PATH=$DOCK_PATH/bin/PatchDock
-DOCK_GRAMM_PATH=$DOCK_PATH/bin/gramm
-DOCK_SIFTS_PATH=$DOCK_PATH/data/SIFTS
+export DOCK_NACCESS_PATH=$DOCK_PATH/bin/naccess2.1.1/naccess
+export DOCK_ZDOCK_PATH=$DOCK_PATH/bin/zdock3.0.2_linux_x64
+export DOCK_PATCHDOCK_PATH=$DOCK_PATH/bin/PatchDock
+export DOCK_GRAMM_PATH=$DOCK_PATH/bin/gramm
+export DOCK_SIFTS_PATH=$DOCK_PATH/data/SIFTS
 
 
