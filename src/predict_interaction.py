@@ -1,3 +1,4 @@
+#!python
 from tools import *
 from multiprocessing import Pool ## required by each file
 from functools import partial
@@ -58,7 +59,7 @@ def main(para):
     ## Step 3: Summary
     from cross_validation import map_pdb_residue
     idx_map = {'RandomForest':-1, 'ZDOCK_RCF':2, 'ZDOCK-Top1':3, 'ZDOCK-Top2':4, 'ZDOCK-Top3':5}
-    residue_value = map_pdb_residue(predfile, para2['MapFile'], idx_map[para['OutMethod'])
+    residue_value = map_pdb_residue(predfile, para2['MapFile'], idx_map[para['OutMethod']])
     with open(para['ExeFile']+'data.txt', 'w') as outfile:
         for g1g2, res, val in residue_value:
             outfile.write('%s\t%s\t-1\t%s\n'%('\t'.join(g1g2.split('=')), res, val))
