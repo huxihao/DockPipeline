@@ -1,4 +1,4 @@
-#!python
+#!/usr/bin/env python
 from tools import *
 from multiprocessing import Pool ## required by each file
 from functools import partial
