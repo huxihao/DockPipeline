@@ -23,10 +23,11 @@ def get_pdb_file(pdbid, pdbfile=None, pdbpath=None, savepath=None):
     if os.path.exists(pdbfile):
         return pdbfile
     locations.append(pdbfile)
-    if os.path.exists(pdbfile+'.gz'): ## compressed file
-        import gzip
-        return gzip.open(pdbfile+'.gz', 'rb')
-    locations.append(pdbfile+'.gz')
+    ## try the compressed one
+    pdbfile += '.gz'
+    if os.path.exists(pdbfile):
+        return pdbfile
+    locations.append(pdbfile)
     ## try the file in the data path
     pdbfile = '%s/%s.pdb'%(pdbpath, pdbid)
     if os.path.exists(pdbfile):
@@ -34,11 +35,11 @@ def get_pdb_file(pdbid, pdbfile=None, pdbpath=None, savepath=None):
     locations.append(pdbfile)
     ## try the default path format in PDB
     pdbfile = pdbpath + '/%s/pdb%s.ent'%(pdbid[1:3].lower(), pdbid.lower())
-    if os.path.exists(pdbfile+'.gz'): ## compressed file
-        import gzip
-        return gzip.open(pdbfile+'.gz', 'rb')
-    locations.append(pdbfile+'.gz')
-    ## try the given path
+    if os.path.exists(pdbfile)
+        return pdbfile
+    locations.append(pdbfile)
+    ## try the compressed one
+    pdbfile += '.gz'
     if os.path.exists(pdbfile):
         return pdbfile
     locations.append(pdbfile)
@@ -89,14 +90,19 @@ class DockTool(object):
             pdbfile = get_pdb_file(pdbid, thefile, pdb_path, None)
         par = PDBParser()
         try:
-            return par.get_structure(pdbid, pdbfile)
+            if pdbfile.endswith('.gz'):
+                infile = gzip.open(pdbfile, 'rb')
+            else:
+                infile = pdbfile
+            return par.get_structure(pdbid, infile)
         except AssertionError:
             ## Ref: https://gist.github.com/JoaoRodrigues/9689449
             pdbfile = get_pdb_file(pdbid, thefile, pdb_path, None)
-            if isinstance(pdbfile, basestring):
-                infile = open(pdbfile, 'r')
+            if pdbfile.endswith('.gz'):
+                import gzip
+                infile = gzip.open(pdbfile, 'rb')
             else:
-                infile = pdbfile
+                infile = open(pdbfile, 'r')
             atom_lines = [l.strip() for l in infile if l.startswith(('ATOM', 'HETATM'))]
             sorted_atoms = sorted(atom_lines, key = lambda l: (l[0:6], l[21], int(l[22:26]), l[26], l[16]))
             infile.close()
