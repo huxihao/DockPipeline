@@ -100,6 +100,7 @@ class DockTool(object):
                 try:
                     import gzip
                     infile = gzip.open(pdbfile, 'rb')
+                    return par.get_structure(pdbid, infile)
                 except IOError:
                     print 'Need to update', pdbfile
                     os.remove(pdbfile)

@@ -20,6 +20,8 @@ def main(para):
         para['FeatureType'] = 'SaveResidue'
     if 'SolutionNum' not in para:
         para['SolutionNum'] = '10'
+    if 'OutMethod' not in para:
+        para['OutMethod'] = 'RandomForest'
     if 'PredictCutoff' not in para:
         para['PredictCutoff'] = '0.218'
 
@@ -55,7 +57,8 @@ def main(para):
     
     ## Step 3: Summary
     from cross_validation import map_pdb_residue
-    residue_value = map_pdb_residue(predfile, para2['MapFile'])
+    idx_map = {'RandomForest':-1, 'ZDOCK_RCF':2, 'ZDOCK-Top1':3, 'ZDOCK-Top2':4, 'ZDOCK-Top3':5}
+    residue_value = map_pdb_residue(predfile, para2['MapFile'], idx_map[para['OutMethod'])
     with open(para['ExeFile']+'data.txt', 'w') as outfile:
         for g1g2, res, val in residue_value:
             outfile.write('%s\t%s\t-1\t%s\n'%('\t'.join(g1g2.split('=')), res, val))
@@ -64,7 +67,7 @@ def main(para):
     pp_val = group_residue(idx, val2) ## using predicted value
 
     listfile = open(para['NewList'], 'r')
-    outfile = open('PredictedInterfaceResidues_Cutoff%s.txt'%para['PredictCutoff'], 'w')
+    outfile = open('PredictedInterface_%s_Cutoff%s.txt'%(para['OutMethod'], para['PredictCutoff']), 'w')
     cc1 = 0; cc2 = 0
     for line in listfile:
         p1,p2 = line.split()[:2]
