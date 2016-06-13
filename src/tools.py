@@ -30,13 +30,13 @@ def show(info="\n", END=True):
         print "%.3f"%info,
     elif isinstance(info, list) or isinstance(info, set) or isinstance(info, tuple):
         for e in info:
-            show(e, False)
+            show(e)
     elif out.endswith("\n"):
         outfile.write(out)
         print out[:min(len(out)-1,78)]
     else:
         outfile.write(str(out)+"\t")
-        print out,#string.ljust(out[:min(len(out),25)],25),
+        print string.ljust(out[:min(len(out),25)],25),
     if END:
         print ''
         outfile.write("\n")
@@ -57,9 +57,9 @@ def main_fun(main):
     para["WorkPath"] = os.path.abspath(".")
     global DEFINE_LOG_FILE
     DEFINE_LOG_FILE = os.path.abspath(para["LogFile"])
-    if "SrcPath" not in para: para["SrcPath"] = os.path.dirname(os.path.realpath(__file__))
-    if "DataPath" not in para: para["DataPath"] = para["SrcPath"]+"/../data"
-    if "BinPath" not in para: para["BinPath"] = para["SrcPath"]+"/../bin"
+    if "SrcPath" not in para: para["SrcPath"] = os.path.abspath("../src/")
+    if "DataPath" not in para: para["DataPath"] = os.path.abspath("../data/")
+    if "BinPath" not in para: para["BinPath"] = os.path.abspath("../bin/")
     ## Delete old log file
     if os.path.exists(DEFINE_LOG_FILE):
         os.remove(DEFINE_LOG_FILE)
@@ -67,12 +67,12 @@ def main_fun(main):
     main(para)
     END_TIME = time.time()
     for name in para:
-        show("# Parameter: " + name + " =\t" + para[name])
-    show(time.strftime("# Begin  at: %Y/%m/%d %H:%M:%S",\
+        show("# Parameter: " + name + " =\t" + para[name] + "\n")
+    show(time.strftime("# Begin  at: %Y/%m/%d %H:%M:%S\n",\
          time.gmtime(START_TIME)))
-    show(time.strftime("# Finish at: %Y/%m/%d %H:%M:%S",\
+    show(time.strftime("# Finish at: %Y/%m/%d %H:%M:%S\n",\
          time.gmtime(END_TIME)))
-    show(time.strftime("# Total Time: %d-th day %H:%M:%S",\
+    show(time.strftime("# Total Time: %d-th day %H:%M:%S\n",\
          time.gmtime(END_TIME-START_TIME))) 
 
 
@@ -297,7 +297,8 @@ def performance(real, pred, x='FPR', y='TPR', eps=1e-50, trim=8):
     return round(curve_area,trim), curve_x, curve_y, curve_c
 
 def main(para):
-    show(num2str(str2num('Hello World!')))
+    show(num2str(str2num('Hello World!\n')))
     show(histogram([1,3,2,1,2,10,-2], [1,2,3]))
+    show()
 
 if __name__ == "__main__": main_fun(main)
