@@ -1,1 +1,1 @@
-A private project for docking
+The abandoned project for docking
